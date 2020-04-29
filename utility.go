@@ -9,12 +9,14 @@ import (
 )
 
 var (
-	app     = cli.NewApp()
-	myFlags = []cli.Flag{
+	app      = cli.NewApp()
+	endPoint string
+	myFlags  = []cli.Flag{
 		&cli.StringFlag{
-			Name:    "argument",
-			Value:   "Enter the Argument",
-			Aliases: []string{"arg"},
+			Name:        "argument",
+			Value:       "Enter the Argument",
+			Aliases:     []string{"arg"},
+			Destination: &endPoint,
 		},
 	}
 )
@@ -37,7 +39,19 @@ func command() {
 			Flags:   myFlags,
 			Aliases: []string{"l"},
 			Action: func(context *cli.Context) error {
-				cmd, err := exec.Command("ls", "-lrth").CombinedOutput()
+				cmd, err := exec.Command("ls", "-lrth", endPoint).CombinedOutput()
+				handleError(err)
+				fmt.Println(string(cmd))
+				return nil
+			},
+		},
+		{
+			Name:    "grep",
+			Usage:   "Use to List Values",
+			Flags:   myFlags,
+			Aliases: []string{"g"},
+			Action: func(context *cli.Context) error {
+				cmd, err := exec.Command("grep", "-ir", endPoint).CombinedOutput()
 				handleError(err)
 				fmt.Println(string(cmd))
 				return nil
