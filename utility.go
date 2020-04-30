@@ -57,6 +57,19 @@ func command() {
 				return nil
 			},
 		},
+		{
+			Name:    "cat",
+			Usage:   "Use to view File Content",
+			Flags:   myFlags,
+			Aliases: []string{"c"},
+			Action: func(context *cli.Context) error {
+				cmd, err := exec.Command("cat", endPoint).CombinedOutput()
+				handleError(err)
+				fmt.Println(string(cmd))
+				return nil
+			},
+		},
+		// Next Features would be around NMAP
 	}
 }
 func main() {
